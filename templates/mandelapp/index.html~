@@ -1,0 +1,13 @@
+<html>
+	<body>
+		<form method="GET" action="/mandelbrot/show">
+			<label>Breite:</label><input type="text" name="w"/><br>
+			<label>Höhe:</label><input type="text" name="h"/><br>
+			<label>Iterationen:</label><input type="text" name="it"/><br>
+			<input type="submit" value="Mandelbrot"/>
+		</form>
+		{% if outputcode == 1 %}
+			<img src="/home/herval/Documents/THB/Master/SystemIntegration/mandelbrot/Django-1.8.15/mandelbrot/brot.png" />
+		{% endif %}
+	</body>
+</html>
