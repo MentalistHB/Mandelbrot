@@ -52,9 +52,7 @@
 					<input type="submit" class="btn btn-success" value="Mandelbrot"/>
 				</form>
 				{% if outputcode == 1 %}
-					{{ settings.DATABASES.NAME }}
-					{% load static %}
-					<img class="col-lg-4" src="{% static 'brot.png' %}" alt="Mon image" />
+					<img src="{{ path }}"/>
 				{% endif %}
 			</div>
 		</div>

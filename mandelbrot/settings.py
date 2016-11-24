@@ -55,7 +55,7 @@ ROOT_URLCONF = 'mandelbrot.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/herval/Documents/THB/Master/Semester1/SI/mandelbrot/Django-1.8.15/mandelbrot/templates'],
+        'DIRS': ['/home/ubuntu/Django-1.8.15/django/bin/Mandelbrot/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,7 +89,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/assets/'
 
 STATICFILES_DIRS = (
-    "/home/herval/Documents/THB/Master/Semester1/SI/mandelbrot/Django-1.8.15/mandelbrot/assets/",
+    #"/home/ubuntu/Django-1.8.15/django/bin/Mandelbrot/assets/",
+    "http://s3.amazonaws.com/uebung/",
 )
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -108,7 +109,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
+STATIC_URL = 'http://s3.amazonaws.com/uebung/'
 
 TEMPLATE_DEBUG = DEBUG
 
