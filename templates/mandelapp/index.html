@@ -26,6 +26,11 @@
 	</div>
 		<div class="container-fluid">
 			<div class="row">
+				<a href="{% url "mandelapp.views.bucketableeren" %}" class="btn btn-danger btn-lg">
+			          	<span class="glyphicon glyphicon-trash"></span>Alle Mandelbröte löschen
+			        </a>
+			</div>
+			<div class="row">
 				{% if outputcode == 1 %}
 					{{ settings.DATABASES.NAME }}
 						{% load static %}
@@ -36,7 +41,17 @@
 				{% endif %}
 			</div>
 			<div class="row">
-				<form method="GET" action="/mandelbrot/show" class="col-lg-offset-2 col-lg-4">
+				{% if outputcode == -1 %}
+					{{ settings.DATABASES.NAME }}
+						{% load static %}
+						<div class="alert alert-success col-lg-offset-2 col-lg-4">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+							<strong>Löschung erfolgt!</strong> Das Mandelbrot wurde erfolgreich gelöscht.
+						</div>
+				{% endif %}
+			</div>
+			<div class="row">
+				<form method="GET" action="/mandelbrot/show" class="col-lg-offset-2 col-lg-3">
 					<fieldset>
 						<legend><h3><b>Eigenschaften des Mandelbrotes</b></h3></legend>
 						<div class="form-group">
@@ -52,7 +67,33 @@
 					<input type="submit" class="btn btn-success" value="Mandelbrot"/>
 				</form>
 				{% if outputcode == 1 %}
-					<img src="{{ path }}"/>
+					<img src="{{ path }}" class="col-lg-5" style="display:inline;"/>
+				{% endif %}
+				{% if outputcode == 1 %}
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Erstellt am</th>
+									<th>Bucket</th>
+									<th>Inhaltstyp</th>
+									<th>Eigentümer</th>
+									<th>Größe</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for brot in brots %}
+	      								<tr class="success">
+										<td>{{ brot.name }}</td>
+										<td>{{ brot.last_modified }}</td>
+										<td>{{ brot.bucket.name }}</td>
+										<td>{{ brot.content_type }}</td>
+										<td>{{ brot.owner.display_name }}</td>
+										<td>{{ brot.size }} b</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
 				{% endif %}
 			</div>
 		</div>

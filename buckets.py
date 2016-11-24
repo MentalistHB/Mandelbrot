@@ -10,21 +10,24 @@ conn = boto.connect_s3(
         calling_format = boto.s3.connection.OrdinaryCallingFormat(),
 )
 
-for bucket in conn.get_all_buckets():
-        print("{name}\t{created}".format(
-                name = bucket.name,
-                created = bucket.creation_date,
-        ))
+#for bucket in conn.get_all_buckets():
+#        print("{name}\t{created}".format(
+#                name = bucket.name,
+#                created = bucket.creation_date,
+#        ))
 
-bucket = conn.create_bucket('mandelbrots3')
-for bucket in conn.get_all_buckets():
-        print("{name}\t{created}".format(
-                name = bucket.name,
-                created = bucket.creation_date,
-        ))
+bucket = conn.get_bucket('mandelbrots3')
+#for bucket in conn.get_all_buckets():
+#        print("{name}\t{created}".format(
+#                name = bucket.name,
+#                created = bucket.creation_date,
+#        ))
 
-key = bucket.new_key('mediabrot.png')
-key.set_contents_from_filename('mediabrot.png')
-key.set_canned_acl('public-read')
-url = key.generate_url(expires_in=10, query_auth=False, force_http=True)
-print('URL: {}'.format(url))
+#key = bucket.new_key('mediabrot.png')
+#key.set_contents_from_filename('mediabrot.png')
+#key.set_canned_acl('public-read')
+#url = key.generate_url(expires_in=10, query_auth=False, force_http=True)
+for key in bucket.list():
+	
+	print("Deleting file: {}".format(key.name))
+	bucket.delete_key(key.name)

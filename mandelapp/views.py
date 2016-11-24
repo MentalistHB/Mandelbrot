@@ -6,6 +6,7 @@ from pylab import *
 import matplotlib
 #matplotlib.use('Agg')
 
+import datetime
 import boto
 import boto.s3.connection
 
@@ -27,15 +28,24 @@ import boto.s3.connection
 def home(request):
 	return render(request, 'mandelapp/index.html')
 
+def bucketableeren(request):
+	access_key = 'AKIAIRBBN7ZV7UPV7F6A'
+	secret_key = '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'
+	conn = boto.connect_s3(
+	        aws_access_key_id = access_key,
+	        aws_secret_access_key = secret_key,
+	        calling_format = boto.s3.connection.OrdinaryCallingFormat(),
+	)
+	bucket = conn.get_bucket('mandelbrots3')
+	for key in bucket.list():	
+		print("Deleting file: {}".format(key.name))
+		bucket.delete_key(key.name)
+	return render(request, 'mandelapp/index.html', {'outputcode':-1})
+
 def show(request):
 	w = int(request.GET.get('w', ''))
 	h = int(request.GET.get('h', ''))
 	it = int(request.GET.get('it', ''))
-	path = show_mandel(w, h, it)
-	return render(request, 'mandelapp/index.html', {'outputcode':1, 'path': path})
-
-def show_mandel(w, h, it):
-	path = "mandelbrot.png"
 	access_key = 'AKIAIRBBN7ZV7UPV7F6A'
 	secret_key = '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'
 	conn = boto.connect_s3(
@@ -44,7 +54,17 @@ def show_mandel(w, h, it):
 	        calling_format = boto.s3.connection.OrdinaryCallingFormat(),
 	)
 	bucket = conn.create_bucket('mandelbrots3')
-	key = bucket.new_key('mandelbrot.png')
+	path = show_mandel(w, h, it, bucket)
+	return render(request, 'mandelapp/index.html', {'outputcode':1, 'path': path, 'brots': get_all_brot(bucket)})
+
+def get_all_brot(bucket):
+	return bucket.list()
+
+def show_mandel(w, h, it, bucket):
+	path = "mandelbrot.png"
+	now = datetime.datetime.now()
+	
+	key = bucket.new_key('mandelbrot_{}-{}-{}_{}-{}-{}.png'.format(now.day, now.month, now.year, now.hour, now.minute, now.second))
 	iterations = it
 	density = 1000
 	x_min, x_max = -2, 1
@@ -54,7 +74,6 @@ def show_mandel(w, h, it):
 	z = c.copy()
 	m = zeros((density, density))
 	for n in range(iterations):
-		print("Completed %d %%" % (100 * float(n)/iterations))
 		indices = (abs(z) <= 10)
 		z[indices] = z[indices]**2 + c[indices]
 		m[indices] = n

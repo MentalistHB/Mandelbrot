@@ -18,4 +18,5 @@ from django.contrib import admin
 urlpatterns = (
     url(r'^mandelbrot/$', 'mandelapp.views.home'),
     url(r'^mandelbrot/show/$', 'mandelapp.views.show'),
+    url(r'^mandelbrot/delete/$', 'mandelapp.views.bucketableeren'),
 )
